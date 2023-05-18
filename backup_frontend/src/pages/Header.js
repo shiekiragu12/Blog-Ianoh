@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.scss'
-import { Link, NavLink } from 'react-router-dom'
-import { Form, FormControl, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
+import { Form, FormControl } from 'react-bootstrap';
 
 
 function Header() {

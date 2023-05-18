@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import './SiderBar.scss'
-import { NavbarBrand, NavItem, NavLink, Navbar, Nav } from 'react-bootstrap'
+import {  NavLink, Navbar, Nav } from 'react-bootstrap'
 
 function SideBar() {
   return (

@@ -4,19 +4,24 @@ const userSchema = mongoose.Schema(
     {
         full_name:{
             type:String,
-            require:[true,"Kindly enter your full names"]
+            required:[true,"Kindly enter your full names"]
         },
         email:{
             type:String,
-            require:[true, "Enter your email"]
+            required:[true, "Enter your email"],
+            unique:[true, "User with same address already registered"]
         },
         phone:{
             type:Number,
-            require:[false]
+            required:[false]
+        },
+        password:{
+            type:String,
+            required:[true, "Kindly enter password"]
         },
         role:{
             type:String,
-            require:[true, "Kindly Ensure you have selected the role"]
+            required:[true, "Kindly Ensure you have selected the role"]
         }
     },
     {
@@ -25,6 +30,6 @@ const userSchema = mongoose.Schema(
     }
 )
 
-const User = mongoose.model('User', blogSchema)
+const User = mongoose.model('User', userSchema)
 
 module.exports = User

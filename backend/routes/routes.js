@@ -2,6 +2,8 @@ const express = require('express');
 const app = express()
 const Blog = require('./../models/Blog')
 const router = express.Router()
+const {getBlogs,getBlogsId,addBlog,updateBlog,deleteBlog} = require('./../controllers/BlogController')
+const {registerUser,loginUser,currentUser} = require('./../controllers/UserController')
 
 // the routes
 router.get('/', (req, res) => {
@@ -10,78 +12,30 @@ router.get('/', (req, res) => {
 
 // user's route
 
+// register the user
+router.post('/register', registerUser)
+
+// login the user
+router.post('/login', loginUser)
+
+// get the current user
+router.get('/user', currentUser)
+
 // blogs routes adding,getting,deleting and updating the data
 
 // get the blogs all of them
-router.get('/blog', async (req, res) => {
-    try {
-        const blog = await Blog.find({})
-        res.status(200).json(blog)
-    }
-    catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: error.message })
-    }
-})
+router.get('/blog', getBlogs)
 
 // get the blog based on the id of the blog
-router.get('/blog/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const blog = await Blog.findById(id)
-        res.status(200).json(blog)
-    }
-    catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: error.message })
-    }
-})
-
+router.get('/blog/:id', getBlogsId)
 
 //  add the blog
-router.post('/blog', async (req, res) => {
-    try {
-        const blog = await Blog.create(req.body)
-        res.status(200).json(blog)
-    }
-    catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: error.message })
-    }
-})
+router.post('/blog', addBlog)
 
 // update the blog based on the id of the blog
-router.put('/blog/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const blog = await Blog.findByIdAndUpdate(id, req.body)
-        // if the blog is not found then display a message
-        if (!blog) {
-            return res.status(404).json({ message: "The blog is not found" })
-        }
-        const updatedBlog = await Blog.findById(id)
-        res.status(200).json(updatedBlog)
-    }
-    catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: error.message })
-    }
-})
+router.put('/blog/:id', updateBlog)
 
 // delete the blog based on the id of the blog
-router.delete('/blog/:id', async (req, res) => {
-    try {
-        const { id } = req.params
-        const blog = await Blog.findByIdAndDelete(id)
-        if (!blog) {
-            return res.status(404).json({ message: "The blog is not found" })
-        }
-        res.status(200).json(blog)
-    }
-    catch (error) {
-        console.log(error.message)
-        res.status(500).json({ message: error.message })
-    }
-})
+router.delete('/blog/:id', deleteBlog)
 
 module.exports = router

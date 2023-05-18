@@ -1,4 +1,3 @@
-import React from 'react'
 import Book from '../assets/book.png'
 import Travel from '../assets/travel_2.png'
 import Travel2 from '../assets/travel.png'

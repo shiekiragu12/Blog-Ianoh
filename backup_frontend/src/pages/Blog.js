@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Blog.scss'
-import { Form, FormControl, Button, Card } from 'react-bootstrap';
+import { Button, Card } from 'react-bootstrap';
 import Book from '../assets/book.png'
 import Travel from '../assets/travel_2.png'
 import Travel2 from '../assets/travel.png'
