@@ -1,0 +1,20 @@
+.dashboard{
+    padding:4rem;
+    width: calc(100% - 200px);
+    float: right;
+    .dashboardmetricscard{
+        display: flex;
+        justify-content: space-between;
+        .card{
+            width: 15%;
+            box-shadow: 3px 0px 7px 2px rgba(0, 0, 0, 0.2); 
+
+        }
+    }
+    .tableReports{
+        display: flex;
+       
+    }
+}
+
+  

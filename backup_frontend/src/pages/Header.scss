@@ -1,0 +1,30 @@
+.header{
+    .navigation {
+        display: flex;
+        padding: 1rem;
+        justify-content: space-between;
+        a{
+            text-decoration: none;
+            color: black;
+            
+        }
+      .authenticator{
+       a{
+        margin-inline: 1rem;
+       }
+      }
+    }
+    .searchBarFilter{
+        display: flex;
+        justify-content: space-between;
+        margin-inline: 2rem;
+        .filterSelects{
+            display: flex;
+            justify-content: space-between;
+            .form-select{
+                margin-inline: 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+    }
+}

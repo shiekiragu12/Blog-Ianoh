@@ -1,0 +1,58 @@
+.login{
+    display: flex;
+    // background-color: rgb(152 255 217 / 48%);
+    img{
+        height: 100vh;
+        width: 50%;
+    }
+    .card{
+        width: 25%;
+        margin: 0 auto;
+        border: none;
+        border-radius: 15px;
+        margin-top: 8rem;
+        .card-body{
+            h2{
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+            span{
+                font-size: 10px;
+                text-transform: uppercase;
+
+            }
+            p{
+                font-size: 10px;
+                text-transform: uppercase;
+                margin-top: 1rem;
+                a{
+                    text-decoration: none;
+                    color: black;
+                    font-weight: bolder;
+                    font-size: 16px;
+                }
+            }
+            form{
+           
+                .form-control{
+                    margin-top: 1rem;
+                    font-size: 12px;
+                    color: grey;
+                    border-top: none;
+                    border-left: none;
+                    border-right: none;
+                    border-radius: 0;
+                }
+   button{
+                    font-size: 9px;
+                    text-transform: uppercase;
+                    width:100%;
+                    color:white;
+                    background: linear-gradient(to left, purple, deeppink);
+                    border: none;
+                }
+            }
+        }
+        
+    }
+}

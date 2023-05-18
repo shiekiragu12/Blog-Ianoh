@@ -1,0 +1,52 @@
+.blogDetails {
+    padding: 1rem;
+
+    .topDetails {
+        display: flex;
+        justify-content: space-between;
+        max-height: 50vh;
+
+        .card {
+            width: 20vw;
+            flex-flow: wrap-reverse;
+            height: fit-content;
+            box-shadow: 6px 3px 13px rgba(0, 0, 0, 0.2); 
+            background-color: #fffdf7;   
+            border: none;
+            .cardImage {
+                width: 25%;
+                margin: 0 auto;
+                border-radius: 50%;
+                margin-inline: 5.2rem;
+                margin-bottom: 1rem;
+            }
+
+            p {
+                text-align-last: center;
+                text-transform: uppercase;
+            }
+            .pSpan {
+                text-align-last: center;
+                text-transform: uppercase;
+                color: gray;
+                font-size: 8px;
+                font-weight: bold;
+            }
+        }
+    }
+
+    .cardDetails {
+        display: flex;
+        max-width: 40vw;
+        margin-top: 1rem;
+        justify-content: space-between;
+    }
+    .pSpan {
+        margin-top: 1rem;
+        text-transform: uppercase;
+        color: gray;
+        font-size: 10px;
+        font-weight: bolder;
+    }
+
+}
