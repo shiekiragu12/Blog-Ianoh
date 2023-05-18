@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import './Register.scss'
-import { Form, FormControl, Button, Card, Image } from 'react-bootstrap';
+import { Form, FormControl, Card, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Editor from '../assets/register.png'
 
@@ -149,20 +149,20 @@ function Register() {
                             {digitCount}/10
                         </p>
                         
-                        <FormControl type='number' placeholder='Password' value={formData.password} onChange={handleChange} required />
+                        <FormControl type='text' placeholder='Password' value={formData.password} onChange={handleChange} required />
                         {formData.passwordError && (
                             <div className="fullnameerror">
                                 {formData.passwordError}
                             </div>
                         )}
-                        <FormControl type='number' placeholder='Confirm Password' value={formData.confirmPassword} onChange={handleChange} required />
+                        <FormControl type='text' placeholder='Confirm Password' value={formData.confirmPassword} onChange={handleChange} required />
                         {formData.confirmPasswordError && (
                             <div className="fullnameerror">
                                 {formData.confirmPasswordError}
                             </div>
                         )}
 
-                        <Button type="submit" className='btn  mt-2'>Create your account</Button>
+                        <button type="submit" className='btn  mt-2'>Create your account</button>
                     </Form>
                     <p>Already Have an account? <Link to='/login'>Login</Link></p>
                 </Card.Body>
