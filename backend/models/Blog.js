@@ -11,9 +11,16 @@ const blogSchema = mongoose.Schema(
             require:[true, "Explain more about the blog"]
         },
         tag:{
-            type:Selection,
+            type:String,
             options:['Option1','option2','Option3'],
             require:[true, "Kindly Select the tag of the blog if it's not there add one"]
         }
+    },
+    {
+        timestamps:true
     }
 )
+
+const Blog = mongoose.model('Blog', blogSchema)
+
+module.exports = Blog

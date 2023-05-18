@@ -1,20 +1,21 @@
 const express = require('express');
 const app = express()
 const mongoose = require('mongoose')
+const route = require('./routes/routes')
+// using express middleware for the purpose of sending my data
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 
-// the routes
-app.get('/', (req,res) => {
-    res.send("welcome to the backend")
-})
-
+app.use('/api',route)
 // connect to the database
 mongoose.
-connect('mongodb+srv://sheerohkiragu:Rs05qwcTsCdfU2LD@cluster0.werilwj.mongodb.net/BlogApi?retryWrites=true&w=majority')
-.then(() =>{
-    app.listen(5000, () =>{
-        console.log('Server is running on port 5000')
+    connect('mongodb+srv://sheerohkiragu:Rs05qwcTsCdfU2LD@cluster0.werilwj.mongodb.net/BlogApi?retryWrites=true&w=majority')
+    .then(() => {
+        app.listen(5000, () => {
+            console.log('Server is running on port 5000')
+        })
+        console.log("connected to mongo db")
+    }).catch((error) => {
+        console.log(error)
     })
-    console.log("connected to mongo db")
-}).catch((error) =>{
-    console.log(error)
-})
+
