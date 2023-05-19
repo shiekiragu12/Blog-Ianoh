@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Blog.scss'
 import { Button, Card } from 'react-bootstrap';
 import Book from '../assets/book.png'
@@ -7,6 +7,9 @@ import Travel2 from '../assets/travel.png'
 import Editor from '../assets/editor.png'
 import Influencer from '../assets/influencer.png'
 import { Link } from 'react-router-dom';
+
+
+
 
 
 function Blog() {
@@ -347,33 +350,43 @@ function Blog() {
 
   // getting to see the rest of the cards
   const [numBlogsToShow, setNumBlogsToShow] = useState(4);
+  const isAuthenticated = localStorage.getItem('authTokens') !== null;
 
+  
   return (
     <div className='blogs'>
       {/* carousel */}
-   
+
       {/* top cards that show the metrics */}
       <div className='cardsMetrics'>
-        <Card className='views'>
-          <Card.Body>
-            No of views :26
-          </Card.Body>
-        </Card>
-        <Card className='posts'>
-          <Card.Body>
-            No of blogs posted :6
-          </Card.Body>
-        </Card>
-        <Card className='reviews'>
-          <Card.Body>
-            No of reviews :26
-          </Card.Body>
-        </Card>
-        <Card className='rates'>
-          <Card.Body>
-            No of rates :26
-          </Card.Body>
-        </Card>
+        {isAuthenticated ?
+          <>
+            <Card className='views'>
+              <Card.Body>
+                No of views :26
+              </Card.Body>
+            </Card>
+            <Card className='posts'>
+              <Card.Body>
+                No of blogs posted :6
+              </Card.Body>
+            </Card>
+            <Card className='reviews'>
+              <Card.Body>
+                No of reviews :26
+              </Card.Body>
+            </Card>
+            <Card className='rates'>
+              <Card.Body>
+                No of rates :26
+              </Card.Body>
+            </Card>
+          </>
+          :
+          <>
+          </>
+        }
+
       </div>
       {/* the blogs with images  */}
 
@@ -391,18 +404,23 @@ function Blog() {
 
               </div>
               <p >{blogDetail.description}</p>
+              {isAuthenticated?
               <Link to={`/blog/${blogDetail.id}`}>Read More</Link>
+              :
+              <Link to={`/login`}>Read More</Link>
+              }
+              
             </Card.Body>
           </Card>
         ))}
         <div className='viewmore'>
-        {blogData.length > 4 && numBlogsToShow < blogData.length && (
-          <Button onClick={() => setNumBlogsToShow(numBlogsToShow + 4)}>
-            View More Blogs
-          </Button>
-        )}
+          {blogData.length > 4 && numBlogsToShow < blogData.length && (
+            <Button onClick={() => setNumBlogsToShow(numBlogsToShow + 4)}>
+              View More Blogs
+            </Button>
+          )}
         </div>
-     
+
       </div>
       <p className='mt-3'></p>
 

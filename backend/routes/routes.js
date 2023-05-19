@@ -1,9 +1,12 @@
 const express = require('express');
 const app = express()
-const Blog = require('./../models/Blog')
 const router = express.Router()
 const {getBlogs,getBlogsId,addBlog,updateBlog,deleteBlog} = require('./../controllers/BlogController')
-const {registerUser,loginUser,currentUser} = require('./../controllers/UserController')
+const {registerUser,loginUser,allUser,getUserId} = require('./../controllers/UserController')
+const {getTags, getTagsId, addTag, updateTag , deleteTag} = require('./../controllers/TagController')
+const {uploadImage} = require('./../controllers/ImageController')
+
+
 
 // the routes
 router.get('/', (req, res) => {
@@ -18,8 +21,12 @@ router.post('/register', registerUser)
 // login the user
 router.post('/login', loginUser)
 
-// get the current user
-router.get('/user', currentUser)
+// get the all user
+router.get('/user', allUser)
+
+// get logged in user
+router.get('/user/:id', getUserId)
+
 
 // blogs routes adding,getting,deleting and updating the data
 
@@ -37,5 +44,28 @@ router.put('/blog/:id', updateBlog)
 
 // delete the blog based on the id of the blog
 router.delete('/blog/:id', deleteBlog)
+
+// tags routes adding,getting,deleting and updating the data
+
+// get the tag all of them
+router.get('/tag', getTags)
+
+// get the tag based on the id of the blog
+router.get('/tag/:id', getTagsId)
+
+//  add the tag
+router.post('/tag', addTag)
+
+// update the tag based on the id of the blog
+router.put('/tag/:id', updateTag)
+
+// delete the tag based on the id of the blog
+router.delete('/tag/:id', deleteTag)
+
+// uploading images from the ckeditor
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
+router.post('/upload-image', upload.single('image'),  uploadImage)
 
 module.exports = router

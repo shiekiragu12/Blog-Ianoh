@@ -1,19 +1,37 @@
 .dashboard{
-    padding:4rem;
-    width: calc(100% - 200px);
+    padding:1.5rem;
+    margin-top: 3rem;
+    width: calc(100% - 240px);
     float: right;
-    .dashboardmetricscard{
+    .topDashboard{
         display: flex;
         justify-content: space-between;
-        .card{
-            width: 15%;
-            box-shadow: 3px 0px 7px 2px rgba(0, 0, 0, 0.2); 
-
+        .dashboardmetricscard{
+           
+            .card {
+                /* width: 103%; */
+                margin-inline: 1rem;
+                margin-bottom: 1rem;
+                width: 43%;
+                background-color: aliceblue;
+                border: none;
+                box-shadow: 3px 0px 8px 0px rgba(0, 0, 0, 0.2); 
+            }
         }
     }
-    .tableReports{
-        display: flex;
-       
+    
+    h2{
+        font-size: 18px;
+        padding: 1rem;
+        text-transform: uppercase;
+        font-weight: bolder;
+        text-align-last: center;
+        margin-top: 1rem;
+    }
+   .tableReports {
+        margin-inline: 1rem;
+        font-size: 12px;
+        background: whitesmoke;
     }
 }
 

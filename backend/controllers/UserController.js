@@ -3,34 +3,34 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken")
 // register the user
 const registerUser = async (req, res) => {
-    const { full_name, email, password, phone, role } = req.body
+    const { full_name, email, password, phone, role } = req.body;
     try {
-
-        const userAvailable = await User.findOne({ email })
-        if (userAvailable) {
-            return res.status(409).json({ error: 'Email already exists' });
-
-        }
-        // sending in the password as a hashed password 
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const user = await User.create(
-            {
-                full_name,
-                email,
-                password: hashedPassword,
-                phone,
-                role,
-            }
-        )
-        res.status(200).json(user)
+      const userAvailable = await User.findOne({ email });
+      if (userAvailable) {
+        return res.status(409).json({ error: 'Email already exists' });
+      }
+  
+      // Generate a salt value
+      const salt = await bcrypt.genSalt(10);
+  
+      // Hash the password using the generated salt
+      const hashedPassword = await bcrypt.hash(password, salt);
+  
+      const user = await User.create({
+        full_name,
+        email,
+        password: hashedPassword,
+        phone,
+        role,
+      });
+  
+      res.status(200).json(user);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Server Error' });
     }
-    catch (error) {
-        res.status(400).json("Fill in all the fields")
-        console.log(error.message)
-        res.status(500).json({ message: error.message })
-    }
-}
-
+  };
+  
 // user login
 const loginUser = async (req, res) => {
     try {
@@ -65,11 +65,11 @@ const loginUser = async (req, res) => {
     }
 }
 
-// get the current user
-// user login
-const currentUser = async (req, res) => {
+
+// all the users in database
+const allUser = async (req, res) => {
     try {
-        const user = await User.create(req.body)
+        const user = await User.find({})
         res.status(200).json(user)
     }
     catch (error) {
@@ -78,4 +78,21 @@ const currentUser = async (req, res) => {
     }
 }
 
-module.exports = { registerUser, loginUser, currentUser }
+// get the current user
+const getUserId = async (req, res) => {
+    try {
+        const { id } = req.params
+        const user = await User.findById(id)
+         // if the blog is not found then display a message
+         if (!user) {
+            return res.status(404).json({ message: "The User is not found" })
+        }
+        res.status(200).json(user)
+    }
+    catch (error) {
+        console.log(error.message)
+        res.status(500).json({ message: error.message })
+    }
+}
+
+module.exports = { registerUser, loginUser, allUser,getUserId }

@@ -1,0 +1,94 @@
+import React, { useState, useRef } from 'react';
+import Header from './Header';
+import SideBar from './SideBar';
+import './Blogs.scss';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+
+function Blogs() {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const quillRef = useRef(null); // Define the quillRef
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files && e.target.files[0]; // Check if files exist
+    if (file) {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        // Send image to the server for upload
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const imageUrl = await response.text();
+
+          // Insert the image into the editor at the current cursor position
+          const editor = quillRef.current.getEditor(); // Access the editor instance from quillRef
+          const range = editor.getSelection();
+          editor.insertEmbed(range.index, 'image', imageUrl);
+        }
+      } catch (error) {
+        console.error('Image upload failed:', error);
+      }
+    }
+  };
+
+  const quillModules = {
+    toolbar: {
+      container: [
+        [{ header: [1, 2, 3, 4, 5, false] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [{ align: [] }],
+        ['link', 'image'],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['clean'],
+      ],
+    },
+    
+  };
+
+  const handleExportPDF = () => {
+    // Code to export content to PDF
+  };
+
+  const handleExportWord = () => {
+    // Code to export content to Word
+  };
+
+  return (
+    <>
+      <Header />
+      <SideBar />
+      <div className='BlogDashboard'>
+        <h1>Create a Blog</h1>
+        <div>
+          <label>Title:</label>
+          <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
+        </div>
+        <div>
+          <label>Content:</label>
+          <ReactQuill
+            ref={quillRef} // Assign the ref to quillRef
+            value={content}
+            onChange={(value) => setContent(value)}
+            modules={quillModules}
+          />
+        </div>
+        <div>
+          <label>Image:</label>
+          <input type='file' accept='image/*' onChange={handleImageUpload} />
+        </div>
+        <div>
+          <button onClick={handleExportPDF}>Export to PDF</button>
+          <button onClick={handleExportWord}>Export to Word</button>
+        </div>
+      </div>
+    </>
+  );
+}
+
+export default Blogs;

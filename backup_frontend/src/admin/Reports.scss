@@ -1,0 +1,70 @@
+.reports {
+    padding: 2rem;
+    width: calc(100% - 240px);
+    float: right;
+    margin-top: 3rem;
+
+    h2 {
+        font-size: 20px;
+        text-align-last: center;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+    .filterSelects {
+        display: flex;
+        justify-content: space-between;
+
+        .form-control,
+        .form-select {
+            width: 25%;
+            font-size: 13px;
+        }
+    }
+    h3.summary {
+text-align-last: center;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: bold;
+        margin-top: 2rem;
+
+    }
+    .topReports {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+
+
+        .table {
+            input#search {
+                margin-left: 1.2rem;
+                border-radius: 10px;
+                margin-bottom: 0.5rem;
+                outline-style: none;
+            }
+            .tableReports {
+                margin-inline: 1rem;
+                width: 80%;
+                font-size: 12px;
+                background: whitesmoke;
+            }
+            .prevNext {
+                text-align-last: center;
+                button{
+                    margin-inline: 2rem;
+                    border: none;
+                    border-radius: 4px;
+                    padding: 0.3rem;
+                    font-size: 12px;
+                }
+                span{
+                    font-size: 12px;
+                }
+            }
+        }
+        .pieReport{
+            margin-top: 2rem;
+        }
+
+    }
+}

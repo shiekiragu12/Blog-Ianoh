@@ -1,0 +1,42 @@
+.BlogDashboard {
+    padding: 2rem;
+    width: calc(100% - 240px);
+    float: right;
+    margin-top: 2rem;
+
+    .pdf {
+        p {
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        .pdfPreview {
+            text-align-last: right;
+
+            h1 {
+                text-align-last: center;
+                font-weight: bold;
+                text-transform: uppercase;
+
+            }
+
+            iframe {
+                border: 0;
+                width: 100%;
+            }
+        }
+
+    }
+
+    h2 {
+        font-size: 25px;
+        text-align-last: center;
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+}

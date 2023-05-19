@@ -1,27 +1,63 @@
-.header{
+.header {
     .navigation {
         display: flex;
         padding: 1rem;
         justify-content: space-between;
-        a{
+
+        a {
             text-decoration: none;
             color: black;
-            
+
         }
-      .authenticator{
-       a{
-        margin-inline: 1rem;
-       }
-      }
+
+        .authenticator {
+            display: flex;
+            justify-content: right;
+
+            img {
+                width: 8%;
+                border-radius: 50%;
+            }
+
+            .dropdown {
+                button {
+                    background-color: transparent;
+                    color: black;
+                    border: none;
+                }
+
+                .dropdown-menu.show {
+                    position: absolute;
+                    inset: 0px 0px auto auto;
+                    transform: translate(-18px, 38px) !important;
+                }
+
+                a {
+                    margin-inline: 0rem;
+                    :hover, :active,:focus{
+                        background: transparent;
+                        color: inherit;
+                
+                       }
+                }
+            }
+
+            a {
+                margin-inline: 1rem;
+            }
+        }
     }
-    .searchBarFilter{
+
+    .searchBarFilter {
         display: flex;
         justify-content: space-between;
         margin-inline: 2rem;
-        .filterSelects{
+
+        .filterSelects {
             display: flex;
             justify-content: space-between;
-            .form-select{
+
+            .form-select {
                 margin-inline: 0.5rem;
                 font-size: 0.75rem;
             }
