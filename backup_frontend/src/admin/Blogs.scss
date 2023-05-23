@@ -5,6 +5,10 @@
     margin-top: 2rem;
 
     .pdf {
+        display: block;
+
+      
+
         p {
             text-transform: uppercase;
             font-weight: bold;
@@ -12,6 +16,11 @@
 
         .pdfPreview {
             text-align-last: right;
+            form{
+                text-align-last: center;
+                width: 50%;
+                margin: 0 auto;
+            }
 
             h1 {
                 text-align-last: center;
@@ -39,4 +48,29 @@
     h1 {
         font-size: 20px;
     }
+    .ckeditorForm{
+        display: flex;
+        select.form-select {
+            margin-bottom: 1rem;
+            margin-top: 0rem;
+            color: gray;
+            font-size: 14px;
+            width: 25%;
+            margin-inline: 2rem;
+        }
+        button{
+            margin-bottom: 1rem;
+        }
+    }
+}
+input.form-control {
+   margin-bottom:1rem ;
+   color: gray;
+   font-size: 14px;
+}
+select.form-select {
+    margin-top:1rem ;
+    color: gray;
+    font-size: 14px;
+
 }

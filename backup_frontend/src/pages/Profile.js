@@ -1,11 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import { Card, Col, Container, Image, Row } from 'react-bootstrap'
-import User from '../assets/avatar7.png'
 import './Profile.scss'
 import { Link } from 'react-router-dom'
 
 import jwt_decode from "jwt-decode";
 import { serverUrl } from "../ServerUrl";
+import User from '../assets/user.png'
+
 
 function Profile() {
     // get the user details the username

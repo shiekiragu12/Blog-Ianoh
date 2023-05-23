@@ -13,6 +13,7 @@ function Header() {
   const navigate = useNavigate();
 
   const isAuthenticated = localStorage.getItem('authTokens') !== null;
+  
   const handleLogout = () => {
     // Clear the tokens from local storage and redirect to the login page
     localStorage.removeItem("authTokens");
@@ -27,35 +28,38 @@ function Header() {
 
   const [image, setImage] = useState("")
 
-  // from the localstorage get the logged in user
+
   useEffect(() => {
     const accessToken = localStorage.getItem("authTokens");
 
-    // get the access token
-    const parsedTokens = JSON.parse(accessToken);
-    const access = parsedTokens.access;
+    if (accessToken) {
+      
+      // get the access token
+      const parsedTokens = JSON.parse(accessToken)    
 
+      if (parsedTokens) {
 
-    // headers access token
-    const config = {
-      headers: { Authorization: `Bearer ${access}` }
+        // decoding the token so that I can get the user id
+        const decodedToken = jwt_decode(accessToken);
+        const userId = decodedToken.userId;
+
+        // hitting the endpoint of getting the user's details
+        serverUrl.get(`/user/${userId}/`)
+        .then((res) => {
+          // get the fullname of the user
+          setFullName(res.data.full_name);
+          setImage(res.data.image);
+          setRole(res.data.role);
+  
+        })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
-    // decoding the token so that i can get the user id
-    const decodedToken = jwt_decode(accessToken);
-    const userId = decodedToken.userId;
-    // hitting the endpoint of getting the user's details
-    serverUrl.get(`/user/${userId}/`)
-      .then((res) => {
-        // get the fullname of the user
-        setFullName(res.data.full_name);
-        setImage(res.data.image);
-        setRole(res.data.role);
-
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }, []);
+  // from the localstorage get the logged in user
+ 
   return (
     <div className='header'>
       <div className='navigation'>
@@ -72,7 +76,7 @@ function Header() {
                   <></>
                 }
                 <Dropdown.Item href="/profile">Profile</Dropdown.Item>
-                <Dropdown.Item onClick={handleLogout}>Sign Out</Dropdown.Item>
+                <Dropdown.Item onClick={handleLogout}>Log Out</Dropdown.Item>
               </DropdownButton>
             </div>
           </>

@@ -79,7 +79,14 @@ section {
         padding: 2.3rem;
     }
 }
-
+@media screen and (max-width: 576px) {
+ 
+    img {
+        width: 40%;
+        margin-inline: 4rem;
+        margin-bottom: 1rem;
+    }
+}
 .p-1-9 {
     padding: 1.9rem;
 }

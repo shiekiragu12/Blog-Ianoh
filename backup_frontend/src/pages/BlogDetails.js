@@ -23,12 +23,7 @@ function BlogDetails() {
           </Card.Body>
         </Card>
       </div>
-      <div className='cardDetails'>
-        <Button className='btn btn-sm btn-success'> Edit Blog</Button>
-        <Button className='btn btn-sm btn-warning text-white'>  Add Blog  </Button>
-        <Button className='btn btn-sm btn-danger'> Remove Blog  </Button>
-      </div>
-      <p className='pSpan' >{blogPost.tag}</p>
+          <p className='pSpan' >{blogPost.tag}</p>
       <p className='mt-2'>{blogPost.description}</p>
     </div>
   )

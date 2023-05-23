@@ -1,4 +1,4 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import BlogDetails from './pages/BlogDetails';
@@ -18,33 +18,34 @@ import { serverUrl } from "./ServerUrl";
 
 function MyRoutes() {
   const isAuthenticated = localStorage.getItem('authTokens') !== null;
-  const [role, setRole] = useState("")
+  const [role, setRole] = useState([])
+
   // from the localstorage get the logged in user
   useEffect(() => {
     const accessToken = localStorage.getItem("authTokens");
 
-    // get the access token
-    const parsedTokens = JSON.parse(accessToken);
-    const access = parsedTokens.access;
+    if (accessToken) {
+      // get the access token
+      const parsedTokens = JSON.parse(accessToken);
 
+      if (parsedTokens) {
+        // headers access token
+      
+        // decoding the token so that I can get the user id
+        const decodedToken = jwt_decode(accessToken);
+        const userId = decodedToken.userId;
 
-    // headers access token
-    const config = {
-      headers: { Authorization: `Bearer ${access}` }
+        // hitting the endpoint of getting the user's details
+        serverUrl.get(`/user/${userId}/`)
+          .then((res) => {
+            // get the role of the logged-in user
+            setRole(res.data.role);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
     }
-    // decoding the token so that i can get the user id
-    const decodedToken = jwt_decode(accessToken);
-    const userId = decodedToken.userId;
-    // hitting the endpoint of getting the user's details
-    serverUrl.get(`/user/${userId}/`)
-      .then((res) => {
-        // get the role of the logged in user
-        setRole(res.data.role);
-
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }, []);
 
   return (
@@ -68,7 +69,6 @@ function MyRoutes() {
               </>
               :
               <></>}
-
           </>
           :
           <>
@@ -76,10 +76,7 @@ function MyRoutes() {
             <Route exact path="/login" Component={Login} />
             <Route exact path="/register" Component={Register} />
           </>
-
-
         }
-
       </Routes>
     </BrowserRouter>
   );

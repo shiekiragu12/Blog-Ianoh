@@ -60,6 +60,7 @@ function Login() {
               localStorage.setItem('authTokens', JSON.stringify(data.accessToken))
               // Redirect to the page where they can add the landlord details
               navigate('/')
+              toast.success("Welcome Back")
             })
             .catch((error) => {
               console.log("Login failed: " + error);

@@ -5,6 +5,7 @@ const {getBlogs,getBlogsId,addBlog,updateBlog,deleteBlog} = require('./../contro
 const {registerUser,loginUser,allUser,getUserId} = require('./../controllers/UserController')
 const {getTags, getTagsId, addTag, updateTag , deleteTag} = require('./../controllers/TagController')
 const {uploadImage} = require('./../controllers/ImageController')
+const {uploadPdf} = require('./../controllers/PdfController')
 
 
 
@@ -64,8 +65,14 @@ router.delete('/tag/:id', deleteTag)
 
 // uploading images from the ckeditor
 const multer = require('multer');
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'uploads/images' });
+const uploadpdfs = multer({ dest: 'uploads/pdf' });
+
 
 router.post('/upload-image', upload.single('image'),  uploadImage)
+
+// uploading pdf
+router.post('/upload-pdf', uploadpdfs.single('pdf'),  uploadPdf)
+
 
 module.exports = router

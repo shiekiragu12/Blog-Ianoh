@@ -13,6 +13,8 @@
         .authenticator {
             display: flex;
             justify-content: right;
+            text-transform: uppercase;
+            font-weight: bold;
 
             img {
                 width: 8%;
@@ -33,12 +35,16 @@
                 }
 
                 a {
+                    text-transform: capitalize;
                     margin-inline: 0rem;
-                    :hover, :active,:focus{
+
+                    :hover,
+                    :active,
+                    :focus {
                         background: transparent;
                         color: inherit;
-                
-                       }
+
+                    }
                 }
             }
 
@@ -53,9 +59,19 @@
         justify-content: space-between;
         margin-inline: 2rem;
 
+        @media screen and (max-width: 576px) {
+            width: auto;
+            display: block;
+        }
+
         .filterSelects {
             display: flex;
             justify-content: space-between;
+
+            @media screen and (max-width: 576px) {
+                width: auto;
+
+            }
 
             .form-select {
                 margin-inline: 0.5rem;

@@ -4,16 +4,23 @@ const blogSchema = mongoose.Schema(
     {
         title:{
             type:String,
-            required:[true,"Kindly enter the Blog's title"]
+            required:[true,'Enter Blog Title']
         },
         description:{
             type:String,
-            require:[true, "Explain more about the blog"]
+            require:[true,'Enter Description']
         },
         tag:{
             type:String,
-            options:['Option1','option2','Option3'],
-            require:[true, "Kindly Select the tag of the blog if it's not there add one"]
+            require:[true,'Enter the Tag']
+        },
+        category:{
+            type:String,
+            require:[true,'Enter Category']
+        },
+        imag:{
+            type:String,
+            require:[false]
         }
     },
     {
