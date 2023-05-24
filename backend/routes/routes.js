@@ -26,6 +26,10 @@ const { uploadPdf } = require("./../controllers/PdfController");
 
 const { mpesaCallback, raiseStk } = require("../controllers/mpesaControllers");
 const generateToken = require("../middlewares/accessTokemMpesaMiddleware");
+const {
+  paymentController,
+  generatePaymentInvoice,
+} = require("../controllers/PaymentController");
 
 // the routes
 router.get("/", (req, res) => {
@@ -34,6 +38,8 @@ router.get("/", (req, res) => {
 
 router.post("/mpesa-callback", mpesaCallback);
 router.post("/raise-stk", generateToken, raiseStk);
+router.get("/payments", paymentController);
+router.post("/generate-invoice", generatePaymentInvoice);
 
 // user's route
 

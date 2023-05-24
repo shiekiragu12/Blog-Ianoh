@@ -2,15 +2,14 @@ const mongoose = require("mongoose");
 
 const userInvoiceSchema = mongoose.Schema(
   {
-    blog_id: {
-      type: String,
-    },
     user_id: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
     },
     transaction_id: {
-      type: Number,
-      required: [true, "Enter your phone"],
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Transaction",
     },
     amount: {
       type: String,

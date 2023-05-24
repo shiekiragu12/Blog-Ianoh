@@ -16,7 +16,7 @@ class MpesaGateway {
 
     this.password = this.generatePassword();
     this.callback_url =
-      "https://b1e3-197-237-142-190.ngrok-free.app/api/mpesa-callback";
+      "https://9ec9-197-237-142-190.ngrok-free.app/api/mpesa-callback";
     this.checkout_url =
       "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
     this.register_url_saf_v1 =
@@ -49,7 +49,9 @@ class MpesaGateway {
       { checkout_id: checkoutRequestId },
 
       { upsert: true, new: true }
-    );
+    ).exec();
+
+    console.log(transaction);
 
     return transaction;
   }
@@ -98,18 +100,13 @@ class MpesaGateway {
 
       const res_data = response.data;
 
-      console.log("Mpesa request data", req_data);
       console.log("Mpesa response info", res_data);
 
-      // if (response.status === 200) {
-      //   data.ip =
-      //     request.headers["x-forwarded-for"] ||
-      //     request.connection.remoteAddress;
-      //   data.checkout_request_id = res_data.CheckoutRequestID;
-
-      //   // await Transaction.create(data);
-
-      // }
+      if (response.status === 200) {
+        await Transaction.create({
+          checkout_id: res_data.CheckoutRequestID,
+        });
+      }
 
       return res_data;
     } catch (error) {
@@ -137,12 +134,14 @@ class MpesaGateway {
     }
 
     console.log("We are printing transaction after successful payment ==>");
-    console.log(transaction);
+    // console.log(transaction.data);
 
-    transaction.amount = amount;
-    transaction.phone_number = new PhoneNumber(phone_number);
-    transaction.receipt_no = receiptNo;
-    transaction.confirmed = true;
+    transaction = Transaction.create({
+      amount,
+      phone: phoneNumber,
+      receipt_number: receiptNo,
+    });
+    // transaction.confirmed = true;
 
     return transaction;
   }
