@@ -22,6 +22,7 @@ const {
   deleteTag,
 } = require("./../controllers/TagController");
 const { uploadImage } = require("./../controllers/ImageController");
+const { uploadPdf } = require("./../controllers/PdfController");
 
 const { mpesaCallback, raiseStk } = require("../controllers/mpesaControllers");
 const generateToken = require("../middlewares/accessTokemMpesaMiddleware");
@@ -84,8 +85,12 @@ router.delete("/tag/:id", deleteTag);
 
 // uploading images from the ckeditor
 const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const upload = multer({ dest: "uploads/images" });
+const uploadpdfs = multer({ dest: "uploads/pdf" });
 
 router.post("/upload-image", upload.single("image"), uploadImage);
+
+// uploading pdf
+router.post("/upload-pdf", uploadpdfs.single("pdf"), uploadPdf);
 
 module.exports = router;

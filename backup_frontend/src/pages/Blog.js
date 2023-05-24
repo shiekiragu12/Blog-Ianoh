@@ -347,7 +347,18 @@ function Blog() {
 
 
   ]
+const monthBlog = [
+  {
+    id: "1",
+    title: "The Ultimate Travel Guide: Top Destinations for Adventure Seekers",
+    description: "Embark on an exhilarating journey as we explore the most thrilling destinations around the world for adventure seekers. From scaling majestic mountains to diving into the depths of the ocean, this blog post will provide a comprehensive guide to adrenaline-pumping activities and breathtaking landscapes. Discover hidden gems, adrenaline-fueled experiences, and insider tips for adventure travel enthusiasts looking to push their boundaries and create unforgettable memories.",
+    img: Book,
+    tag: "Travel",
+    datePosted: "2022-06-20",
+    personPosted: "David Kim",
 
+  },
+]
   // getting to see the rest of the cards
   const [numBlogsToShow, setNumBlogsToShow] = useState(4);
   const isAuthenticated = localStorage.getItem('authTokens') !== null;
@@ -360,7 +371,7 @@ function Blog() {
       {/* top cards that show the metrics */}
       <div className='cardsMetrics'>
         {isAuthenticated ?
-          <>
+          <div className='d-none'>
             <Card className='views'>
               <Card.Body>
                 No of views :26
@@ -381,7 +392,7 @@ function Blog() {
                 No of rates :26
               </Card.Body>
             </Card>
-          </>
+          </div>
           :
           <>
           </>
@@ -389,9 +400,34 @@ function Blog() {
 
       </div>
       {/* the blogs with images  */}
+      <div >
+        <h3>Monthly Issue, Top Trending blog</h3>
+      {monthBlog.slice(0, numBlogsToShow).map((blogDetail) => (
+          <Card key={blogDetail.id} className='monthBlog'>
+            <Card.Img src={blogDetail.img} />
+            <Card.Body>
+              <h2>{blogDetail.title}</h2>
+              <span>{blogDetail.tag}</span>
+              <div className='d-flex justify-content-between'>
+                <span>Posted by: {blogDetail.personPosted}</span>
+                <span>on: {blogDetail.datePosted}</span>
 
+              </div>
+              <p >{blogDetail.description}</p>
+              {isAuthenticated?
+              <Link to={`/blog/${blogDetail.id}`}>Read More</Link>
+              :
+              <Link to={`/login`}>Read More</Link>
+              }
+              
+            </Card.Body>
+          </Card>
+        ))}
+
+      </div>
+   
       <div className='blogsCards'>
-
+      
         {blogData.slice(0, numBlogsToShow).map((blogDetail) => (
           <Card key={blogDetail.id}>
             <Card.Img src={blogDetail.img} />
