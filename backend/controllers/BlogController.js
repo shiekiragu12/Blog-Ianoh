@@ -34,7 +34,8 @@ const getBlogsId = async (req, res) => {
 // add blogs to database
 const addBlog = async (req, res) => {
     try {
-        const blog = await Blog.create(req.body)
+        const pdfFile = req.file;
+        const blog = await Blog.create(req.body,{image:pdfFile} )
         res.status(200).json(blog)
     }
     catch (error) {
