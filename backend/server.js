@@ -10,6 +10,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 app.use('/api', route)
+
+// static files
+app.use(express.static(path.join(__dirname,"../backup_frontend/build")))
+
+app.get("*",function(req,res){
+    res.sendFile(path.join(__dirname,"../backup_frontend/build/index.html"))
+})
+
 // connect to the database
 mongoose.
     connect('mongodb+srv://sheerohkiragu:Rs05qwcTsCdfU2LD@cluster0.werilwj.mongodb.net/BlogApi?retryWrites=true&w=majority', {
