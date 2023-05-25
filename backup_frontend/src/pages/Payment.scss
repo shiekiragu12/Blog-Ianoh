@@ -1,0 +1,32 @@
+.Payment{
+    padding: 1.5rem;
+    h1{
+        font-size: 13px;
+    }
+    .card{
+        margin:0 auto;
+        width: 45%;
+        padding: 1.5rem;
+        box-shadow: 3px 0px 7px 2px rgba(0, 0, 0, 0.2); 
+        border: 0;
+        height:50vh;
+        form{
+            span {
+                font-size: 10px;
+                color: grey;
+                font-weight: bold;
+                float: right;
+                line-height: 1;
+            }
+            p.text-danger {
+                font-size: 11px;
+                text-transform: uppercase;
+            }
+            .bgBtn{
+                background-color: yellowgreen;
+                border: 0;
+                margin-inline: 2rem;
+            }
+        }
+    }
+}

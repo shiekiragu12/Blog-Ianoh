@@ -8,7 +8,9 @@ import Editor from '../assets/editor.png'
 import Influencer from '../assets/influencer.png'
 import { Link } from 'react-router-dom';
 
-
+// auth imports
+import jwt_decode from "jwt-decode";
+import { serverUrl } from "../ServerUrl";
 
 
 
@@ -347,23 +349,48 @@ function Blog() {
 
 
   ]
-const monthBlog = [
-  {
-    id: "1",
-    title: "The Ultimate Travel Guide: Top Destinations for Adventure Seekers",
-    description: "Embark on an exhilarating journey as we explore the most thrilling destinations around the world for adventure seekers. From scaling majestic mountains to diving into the depths of the ocean, this blog post will provide a comprehensive guide to adrenaline-pumping activities and breathtaking landscapes. Discover hidden gems, adrenaline-fueled experiences, and insider tips for adventure travel enthusiasts looking to push their boundaries and create unforgettable memories.",
-    img: Book,
-    tag: "Travel",
-    datePosted: "2022-06-20",
-    personPosted: "David Kim",
+  const monthBlog = [
+    {
+      id: "1",
+      title: "The Ultimate Travel Guide: Top Destinations for Adventure Seekers",
+      description: "Embark on an exhilarating journey as we explore the most thrilling destinations around the world for adventure seekers. From scaling majestic mountains to diving into the depths of the ocean, this blog post will provide a comprehensive guide to adrenaline-pumping activities and breathtaking landscapes. Discover hidden gems, adrenaline-fueled experiences, and insider tips for adventure travel enthusiasts looking to push their boundaries and create unforgettable memories.",
+      img: Book,
+      tag: "Travel",
+      datePosted: "2022-06-20",
+      personPosted: "David Kim",
 
-  },
-]
+    },
+  ]
   // getting to see the rest of the cards
   const [numBlogsToShow, setNumBlogsToShow] = useState(4);
   const isAuthenticated = localStorage.getItem('authTokens') !== null;
+  const [paidStatus, setPaidStatus] = useState('')
 
-  
+  useEffect(() => {
+    const accessToken = localStorage.getItem("authTokens");
+
+    if (accessToken) {
+
+      // get the access token
+      const parsedTokens = JSON.parse(accessToken)
+
+      if (parsedTokens) {
+
+        // decoding the token so that I can get the user id
+        const decodedToken = jwt_decode(accessToken);
+        const userId = decodedToken.userId;
+
+        // hitting the endpoint of getting the user's status of payment
+        serverUrl.get(`/payments?id=${userId}`)
+          .then((res) => {
+            setPaidStatus(res.data.status)
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    }
+  }, []);
   return (
     <div className='blogs'>
       {/* carousel */}
@@ -402,7 +429,7 @@ const monthBlog = [
       {/* the blogs with images  */}
       <div >
         <h3>Monthly Issue, Top Trending blog</h3>
-      {monthBlog.slice(0, numBlogsToShow).map((blogDetail) => (
+        {monthBlog.slice(0, numBlogsToShow).map((blogDetail) => (
           <Card key={blogDetail.id} className='monthBlog'>
             <Card.Img src={blogDetail.img} />
             <Card.Body>
@@ -414,20 +441,25 @@ const monthBlog = [
 
               </div>
               <p >{blogDetail.description}</p>
-              {isAuthenticated?
-              <Link to={`/blog/${blogDetail.id}`}>Read More</Link>
-              :
-              <Link to={`/login`}>Read More</Link>
-              }
-              
+              {isAuthenticated ? (
+                paidStatus === "unpaid" ? (
+                  <Link to={`/payment`}>Read More</Link>
+                ) : (
+                  <Link to={`/blog/${blogDetail.id}`}>Read More</Link>
+                )
+              ) : (
+                <Link to={`/login`}>Read More</Link>
+              )}
+
+
             </Card.Body>
           </Card>
         ))}
 
       </div>
-   
+
       <div className='blogsCards'>
-      
+
         {blogData.slice(0, numBlogsToShow).map((blogDetail) => (
           <Card key={blogDetail.id}>
             <Card.Img src={blogDetail.img} />
@@ -440,12 +472,16 @@ const monthBlog = [
 
               </div>
               <p >{blogDetail.description}</p>
-              {isAuthenticated?
-              <Link to={`/blog/${blogDetail.id}`}>Read More</Link>
-              :
-              <Link to={`/login`}>Read More</Link>
-              }
-              
+              {isAuthenticated ? (
+                paidStatus === "unpaid" ? (
+                  <Link to={`/payment`}>Read More</Link>
+                ) : (
+                  <Link to={`/blog/${blogDetail.id}`}>Read More</Link>
+                )
+              ) : (
+                <Link to={`/login`}>Read More</Link>
+              )}
+
             </Card.Body>
           </Card>
         ))}
