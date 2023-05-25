@@ -8,7 +8,9 @@ const tagSchema = mongoose.Schema(
         },
         name:{
             type:String,
-            require:[true, "Give a name to the tag"]
+            require:[true, "Give a name to the tag"],
+            unique:[true, "Tag  with the same name already set"]
+
         }
     },
     {

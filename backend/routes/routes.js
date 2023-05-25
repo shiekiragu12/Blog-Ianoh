@@ -36,10 +36,6 @@ router.get("/", (req, res) => {
   res.send("welcome to the backend");
 });
 
-router.post("/mpesa-callback", mpesaCallback);
-router.post("/raise-stk", generateToken, raiseStk);
-router.get("/payments", paymentController);
-router.post("/generate-invoice", generatePaymentInvoice);
 
 // user's route
 
@@ -98,5 +94,12 @@ router.post("/upload-image", upload.single("image"), uploadImage);
 
 // uploading pdf
 router.post("/upload-pdf", uploadpdfs.single("pdf"), uploadPdf);
+
+
+// payments routes
+router.post("/mpesa-callback", mpesaCallback);
+router.post("/raise-stk", generateToken, raiseStk);
+router.get("/payments", paymentController);
+router.post("/generate-invoice", generatePaymentInvoice);
 
 module.exports = router;
