@@ -35,7 +35,7 @@ const getBlogsId = async (req, res) => {
 const addBlog = async (req, res) => {
     try {
         const pdfFile = req.file;
-        const blog = await Blog.create(req.body,{image:pdfFile} )
+        const blog = await Blog.create(req.body)
         res.status(200).json(blog)
     }
     catch (error) {

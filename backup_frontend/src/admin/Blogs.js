@@ -5,7 +5,7 @@ import './Blogs.scss';
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import { serverUrl } from "../ServerUrl";
-import { Button, Modal, Form, FormControl, FormSelect } from 'react-bootstrap';
+import { Button,  Form, FormControl, FormSelect } from 'react-bootstrap';
 import { toast } from "react-toastify";
 
 function Blogs() {
@@ -16,11 +16,8 @@ function Blogs() {
   const [blogTitle, setBlogTitle] = useState('');
   const [blogCategory, setBlogCategory] = useState('');
   const [blogTag, setBlogTag] = useState('');
-  const editorRef = useRef(); // Add this line to define the editorRef
   const [editorData, setEditorData] = useState('');
   const [editorTitle, setEditorTitle] = useState('');
-  const [editorImage, setEditorImage] = useState('');
-
 
 
   // ckeditor image upload functionality
@@ -35,7 +32,8 @@ function Blogs() {
       })
         .then(response => response.json())
         .then(data => {
-          const imageUrl = data.url;
+          
+          const imageUrl = data.imageUrl;
           resolve({ default: imageUrl });
         })
         .catch(error => {
@@ -50,14 +48,10 @@ function Blogs() {
     const data = editor.getData();
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(data, 'text/html');
-
-    
     const titleElement = htmlDoc.querySelector('h1');
-    setEditorTitle(titleElement ? titleElement.textContent : '');
+    const title = titleElement ? titleElement.textContent : ''; // Extract the title from the <h1> element
 
-    const imageElement = htmlDoc.querySelector('img');
-    setEditorImage(imageElement ? imageElement.src : '');
-
+    setEditorTitle(title)
     setEditorData(data)
     setBlogCategory('');
     setBlogTag('');
@@ -70,26 +64,26 @@ function Blogs() {
     // You can perform any necessary validations before saving the blog
     // For example, check if the required fields are filled
 
-     if (blogCategory && blogTag) {
-    // Send the data to the backend
-    serverUrl
-      .post('/blog', {
-        title: editorTitle,
-        description: editorData,
-        category: blogCategory,
-        tag: blogTag,
-      })
-      .then(res => {
-        console.log(res)
-        toast.success('Blog saved successfully.');
-      })
-      .catch(error => {
-        console.error('Error saving blog:', error);
-        toast.error('Error saving blog.');
-      });
-  } else {
-    toast.error('Please fill in all the required fields.');
-  }
+    if (blogCategory && blogTag) {
+      // Send the data to the backend
+      serverUrl
+        .post('/blog', {
+          title: editorTitle,
+          description: editorData,
+          category: blogCategory,
+          tag: blogTag,
+        })
+        .then(res => {
+          console.log(res)
+          toast.success('Blog saved successfully.');
+        })
+        .catch(error => {
+          console.error('Error saving blog:', error);
+          toast.error('Error saving blog.');
+        });
+    } else {
+      toast.error('Please fill in all the required fields.');
+    }
   };
 
   // importing of the pdf and how to preview it
@@ -245,7 +239,7 @@ function Blogs() {
                   ))}
                 </FormSelect>
 
-                <Button type='submit' className='btn btn-primary mt-3' onClick={handleSaveBlog}>Save Blog</Button> {/* New "Save Blog" button */}
+                <Button  className='btn btn-primary mt-3' onClick={handleSaveBlog}>Save Blog</Button> {/* New "Save Blog" button */}
 
               </Form>
 

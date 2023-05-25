@@ -4,19 +4,19 @@ const blogSchema = mongoose.Schema(
     {
         title:{
             type:String,
-            required:[false]
+            required:[true,"Enter Blog Title"]
         },
         description:{
             type:String,
-            require:[false]
+            require:[true,"Enter Blog Data"]
         },
         tag:{
             type:String,
-            require:[false]
+            require:[true,"Select Blog Tag"]
         },
         category:{
             type:String,
-            require:[false]
+            require:[true,"Select Blog Category"]
         },
         image:{
             type:String,

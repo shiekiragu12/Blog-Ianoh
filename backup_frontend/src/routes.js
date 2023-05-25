@@ -15,6 +15,7 @@ import Profile from './pages/Profile';
 // auth imports
 import jwt_decode from "jwt-decode";
 import { serverUrl } from "./ServerUrl";
+import Payment from './pages/Payment';
 
 function MyRoutes() {
   const isAuthenticated = localStorage.getItem('authTokens') !== null;
@@ -58,7 +59,7 @@ function MyRoutes() {
             <Route exact path="/register" Component={Register} />
             <Route exact path="/profile" Component={Profile} />
             <Route path="/blog/:id" Component={BlogDetails} />
-
+            <Route path="/payment" Component={Payment} />
             {/* admin routes */}
             {role === "Admin" ?
               <>

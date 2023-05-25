@@ -58,8 +58,39 @@ function Login() {
               setAuthTokens(data.accessToken)
               setUser(jwt_decode(data.accessToken))
               localStorage.setItem('authTokens', JSON.stringify(data.accessToken))
-              // Redirect to the page where they can add the landlord details
-              navigate('/')
+             
+              //check if they have paid first
+              const accessToken = localStorage.getItem("authTokens");
+
+              if (accessToken) {
+      
+                // get the access token
+                const parsedTokens = JSON.parse(accessToken)    
+          
+                if (parsedTokens) {
+          
+                  // decoding the token so that I can get the user id
+                  const decodedToken = jwt_decode(accessToken);
+                  const userId = decodedToken.userId;
+          
+                  // hitting the endpoint of getting the user's status of payment
+                  serverUrl.get(`/payments?id=${userId}`)
+                  .then((res) => {
+                   if(res.data.status === 'unpaid') {
+                    navigate('/payment')
+                   }else{
+                   navigate('/')
+                   }
+            
+                  })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+                }
+              }
+
+
+              
               toast.success("Welcome Back")
             })
             .catch((error) => {
