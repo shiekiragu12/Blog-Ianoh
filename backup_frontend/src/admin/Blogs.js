@@ -19,6 +19,8 @@ function Blogs() {
   const editorRef = useRef(); // Add this line to define the editorRef
   const [editorData, setEditorData] = useState('');
   const [editorTitle, setEditorTitle] = useState('');
+  const [editorImage, setEditorImage] = useState('');
+
 
 
   // ckeditor image upload functionality
@@ -48,10 +50,14 @@ function Blogs() {
     const data = editor.getData();
     const parser = new DOMParser();
     const htmlDoc = parser.parseFromString(data, 'text/html');
-    const titleElement = htmlDoc.querySelector('h1');
-    const title = titleElement ? titleElement.textContent : ''; // Extract the title from the <h1> element
 
-    setEditorTitle(title)
+    
+    const titleElement = htmlDoc.querySelector('h1');
+    setEditorTitle(titleElement ? titleElement.textContent : '');
+
+    const imageElement = htmlDoc.querySelector('img');
+    setEditorImage(imageElement ? imageElement.src : '');
+
     setEditorData(data)
     setBlogCategory('');
     setBlogTag('');
