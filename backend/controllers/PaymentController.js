@@ -3,18 +3,23 @@ const schedule = require("node-schedule");
 const moment = require("moment");
 const UserInvoice = require("../models/UserInvoice");
 
-const paymentController = (req, res) => {
-  const user = User.findOne({ id: req.query.id });
-  console.log(user);
+const paymentController = async (req, res) => {
+  const user = await User.findOne({ _id: req.query.id });
 
-  if (!user) return;
-  const is_paid_invoice = UserInvoice.findOne({ user_id: user });
-  if (!is_paid_invoice) return;
-  return is_paid_invoice;
+  if (!user) {
+    res.status(400);
+    throw new Error("User not found");
+  }
+  const is_paid_invoice = await UserInvoice.findOne({ user_id: user });
+  console.log(is_paid_invoice);
+  if (!is_paid_invoice) {
+    res.status(400);
+    throw new Error("Invoice not found");
+  }
+  return res.status(200).json(is_paid_invoice);
 };
 
 // Function to generate and save the payment invoice
-
 const generatePaymentInvoice = async (req, res) => {
   // Get the current date and format it as desired
   const currentMonth = moment().format("MMMM");
