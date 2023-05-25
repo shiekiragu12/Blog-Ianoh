@@ -16,7 +16,7 @@ class MpesaGateway {
 
     this.password = this.generatePassword();
     this.callback_url =
-      "https://9ec9-197-237-142-190.ngrok-free.app/api/mpesa-callback";
+      "https://b69b-105-62-164-251.ngrok-free.app/api/mpesa-callback";
     this.checkout_url =
       "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
     this.register_url_saf_v1 =
@@ -43,36 +43,41 @@ class MpesaGateway {
     }
   }
 
-  getTransactionObject(data) {
+  async getTransactionObject(data) {
     const checkoutRequestId = data.Body.stkCallback.CheckoutRequestID;
-    const transaction = Transaction.findOneAndUpdate(
-      { checkout_id: checkoutRequestId },
-
-      { upsert: true, new: true }
-    ).exec();
-
-    console.log(transaction);
+    const transaction = await Transaction.findOne({
+      checkout_id: checkoutRequestId,
+    });
 
     return transaction;
   }
 
-  callbackHandler(data) {
+  async callbackHandler(data) {
+    const checkoutRequestId = data.Body.stkCallback.CheckoutRequestID;
     const status = this.checkStatus(data);
     const transaction = this.getTransactionObject(data);
     if (status === 0) {
       console.log("We have successful payment");
       this.handleSuccessfulPay(data, transaction);
+      await Transaction.updateOne(
+        { checkout_id: checkoutRequestId },
+        { $set: { status: status } }
+      );
     } else {
       console.log("Payment failed");
       transaction.status = 1;
+      await Transaction.updateOne(
+        { checkout_id: checkoutRequestId },
+        { $set: { status: 1 } }
+      );
     }
-    transaction.status = status;
-    transaction.save();
+
+    // transaction.save();
     return { status: "ok", code: 0 };
   }
 
   async stk_push_request(payload, accessToken) {
-    const { amount, phone_number } = payload;
+    const { amount, phone_number, invoice } = payload;
 
     var phone;
     if (phone_number.startsWith("0")) {
@@ -105,6 +110,8 @@ class MpesaGateway {
       if (response.status === 200) {
         await Transaction.create({
           checkout_id: res_data.CheckoutRequestID,
+          user_invoice: invoice,
+          status: res_data.ResponseCode,
         });
       }
 
@@ -115,7 +122,9 @@ class MpesaGateway {
     }
   }
 
-  handleSuccessfulPay(data, transaction) {
+  async handleSuccessfulPay(data, transaction) {
+    const checkoutRequestId = data.Body.stkCallback.CheckoutRequestID;
+
     const items = data.Body.stkCallback.CallbackMetadata.Item;
     let amount, receiptNo, phoneNumber;
 
@@ -132,16 +141,12 @@ class MpesaGateway {
           break;
       }
     }
-
-    console.log("We are printing transaction after successful payment ==>");
-    // console.log(transaction.data);
-
-    transaction = Transaction.create({
-      amount,
-      phone: phoneNumber,
-      receipt_number: receiptNo,
-    });
-    // transaction.confirmed = true;
+    await Transaction.updateOne(
+      { checkout_id: checkoutRequestId },
+      {
+        $set: { amount: amount, phone: phoneNumber, receipt_number: receiptNo },
+      }
+    );
 
     return transaction;
   }

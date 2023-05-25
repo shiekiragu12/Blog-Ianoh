@@ -1,11 +1,10 @@
 const mongoose = require("mongoose");
-const { UserInvoice } = require("./UserInvoice");
+const UserInvoice = require("./UserInvoice");
 
 const transactionSchema = mongoose.Schema(
   {
     user_invoice: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true,
       ref: "UserInvoice",
     },
     transaction_number: {
@@ -42,17 +41,17 @@ const transactionSchema = mongoose.Schema(
 );
 
 // Define the middleware function for post-save event
-transactionSchema.post("save", function (doc) {
+transactionSchema.post("save", async function (doc) {
   // Logic to be executed after saving the document
   console.log("Transaction saved:", doc);
 
   const status = doc.status;
   const user_invoice_id = doc.user_invoice;
-  const user_invoice = UserInvoice.find({ _id: user_invoice_id });
-  if (status === 0) {
-    user_invoice.status = "paid";
-    user_invoice.transaction = doc;
-    user_invoice.save();
+  if (status === "0") {
+    await UserInvoice.updateOne(
+      { _id: user_invoice_id },
+      { $set: { status: "paid", transaction: doc } }
+    );
   }
 });
 
