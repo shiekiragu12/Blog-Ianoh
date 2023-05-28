@@ -4,13 +4,19 @@ const moment = require("moment");
 const UserInvoice = require("../models/UserInvoice");
 
 const paymentController = async (req, res) => {
-  const user = await User.findOne({ _id: req.query.id });
+  const user = await User.findOne({
+    _id: req.query.id,
+  });
 
   if (!user) {
     res.status(400);
     throw new Error("User not found");
   }
-  const is_paid_invoice = await UserInvoice.findOne({ user_id: user });
+
+  const is_paid_invoice = await UserInvoice.findOne({
+    user_id: user,
+    month: req.query.month,
+  });
   console.log(is_paid_invoice);
   if (!is_paid_invoice) {
     res.status(400);
