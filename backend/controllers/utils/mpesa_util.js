@@ -1,6 +1,7 @@
 const axios = require("axios");
 const Transaction = require("../../models/Transaction");
 const { DateTime } = require("luxon");
+const UserInvoice = require("../../models/UserInvoice");
 
 class MpesaGateway {
   constructor() {
@@ -15,8 +16,7 @@ class MpesaGateway {
       "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials";
 
     this.password = this.generatePassword();
-    this.callback_url =
-      "https://b69b-105-62-164-251.ngrok-free.app/api/mpesa-callback";
+    this.callback_url = "https://mazzu-blog.onrender.com/api/mpesa-callback";
     this.checkout_url =
       "https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest";
     this.register_url_saf_v1 =
@@ -54,15 +54,22 @@ class MpesaGateway {
 
   async callbackHandler(data) {
     const checkoutRequestId = data.Body.stkCallback.CheckoutRequestID;
+    const resultCode = data.Body.stkCallback.ResultCode;
     const status = this.checkStatus(data);
     const transaction = this.getTransactionObject(data);
     if (status === 0) {
-      console.log("We have successful payment");
       this.handleSuccessfulPay(data, transaction);
       await Transaction.updateOne(
         { checkout_id: checkoutRequestId },
-        { $set: { status: status } }
+        { $set: { status: resultCode } }
       );
+      transaction.then(async (data) => {
+        // console.log("this is transaction object ", data.user_invoice);
+        await UserInvoice.updateOne(
+          { _id: data.user_invoice },
+          { $set: { status: "paid", transaction: data._id } }
+        );
+      });
     } else {
       console.log("Payment failed");
       transaction.status = 1;
@@ -111,7 +118,6 @@ class MpesaGateway {
         await Transaction.create({
           checkout_id: res_data.CheckoutRequestID,
           user_invoice: invoice,
-          status: res_data.ResponseCode,
         });
       }
 

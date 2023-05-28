@@ -9,6 +9,10 @@ import jwt_decode from "jwt-decode"
 import { Link } from 'react-router-dom';
 
 function Payment() {
+// transaction
+
+const [transactionId, setTransactionId] = useState('')
+
     const [formData, setFormData] = useState({
         phone: "",
         phoneWarning: "",
@@ -45,24 +49,54 @@ function Payment() {
         //check if password and confirm password match
         if (formData.phone.length !== 10) {
             setFormData((prevFormData) => ({
-              ...prevFormData,
-              phoneWarning: "Phone number should be 10 digits",
+                ...prevFormData,
+                phoneWarning: "Phone number should be 10 digits",
             }));
             return; // Stop execution if the phone number length is not 10
-          }
-          // Reset the phoneWarning if the phone number length is valid
-          setFormData((prevFormData) => ({
+        }
+        // Reset the phoneWarning if the phone number length is valid
+        setFormData((prevFormData) => ({
             ...prevFormData,
             phoneWarning: "",
-          }));
-        
-          // Data to be sent to the backend
-          const data = [{
-            phone: formData.phone,
-          }];
-        
+        }));
+        const accessToken = localStorage.getItem("authTokens");
 
-    
+        if (accessToken) {
+
+            // get the access token
+            const parsedTokens = JSON.parse(accessToken)
+
+            if (parsedTokens) {
+
+                // decoding the token so that I can get the user id
+                const decodedToken = jwt_decode(accessToken);
+                const userId = decodedToken.userId;
+
+                // hitting the endpoint of getting the user's status of payment
+                serverUrl.get(`/payments?id=${userId}`)
+                    .then((res) => {
+                      setTransactionId(res.data._id)
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            }
+        }
+        // Data to be sent to the backend
+        const data = [{
+            phone_number: formData.phone,
+            amount: 50,
+            innvoice:transactionId,
+        }];
+        serverUrl.post(`/raise-stk`,data)
+        .then((res) => {
+          console.log(res.data._id)
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+
 
 
     }
